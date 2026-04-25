@@ -6,7 +6,7 @@
     "runner.revs": [1],
     "runner.time_unit": "milliseconds",
     "runner.php_config": {
-        "memory_limit": "512M"
+        "memory_limit": "-1"
     },
     "runner.php_env": {
         "CLICKHOUSE_HTTP_PORT": "18123",

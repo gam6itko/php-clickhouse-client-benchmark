@@ -32,6 +32,17 @@ Memory for 1m batch: PDO ~1 MB vs smi2 ~4.6 MB.
 
 **Key takeaway:** PDO (MySQL wire protocol) outperforms smi2/phpClickHouse (HTTP) across every workload — 2–5× faster and 2–4× less memory. The gap is most dramatic with large batch inserts and streaming reads. PDO streaming 1M rows uses only 727 KB regardless of result size, making it the only practical option for large dataset processing.
 
+### ClickHouse server-side view (`system.query_log`)
+
+| Interface | Type | Queries | avg server time | avg server RAM | avg result size |
+|-----------|------|---------|-----------------|----------------|-----------------|
+| HTTP (smi2) | Insert | 3 303 | **0.4 ms** | 400 KB | 34 KB |
+| HTTP (smi2) | Select | 42 | **155 ms** | 60 MB | 15.9 MB |
+| MySQL (PDO) | Insert | 28 868 | 1.06 ms | **1.2 KB** | 18 KB |
+| MySQL (PDO) | Select | 48 | 273 ms | **16.8 MB** | 18.6 MB |
+
+From the server's perspective the picture is inverted: smi2 HTTP is faster server-side but consumes 3.5× more RAM per SELECT (ClickHouse must buffer the full result before sending an HTTP response). PDO MySQL streaming keeps server memory low but holds the cursor open while PHP reads row by row, increasing apparent query duration. The PHP-side overhead of smi2's HTTP serialization outweighs its server-side speed advantage — which is why PDO wins end-to-end.
+
 ## Benchmark subjects
 
 | Subject | Description |

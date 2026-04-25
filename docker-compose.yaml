@@ -10,3 +10,4 @@ services:
       CLICKHOUSE_PASSWORD: default
     volumes:
       - ./docker/clickhouse/initdb:/docker-entrypoint-initdb.d
+      - ./docker/clickhouse/data:/var/lib/clickhouse
