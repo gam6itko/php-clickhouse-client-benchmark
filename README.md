@@ -7,6 +7,31 @@ Compares two PHP ClickHouse clients across common insert and read workloads:
 | PDO MySQL | MySQL wire protocol (port 9004) | built-in `ext-pdo` |
 | smi2/phpClickHouse | HTTP (port 8123) | [smi2/phpclickhouse](https://github.com/smi2/phpClickHouse) |
 
+## Results summary
+
+Tested on PHP 8.4.20, ClickHouse running locally via Docker.
+
+### Insert
+
+| Subject | PDO | smi2 | Winner |
+|---------|-----|------|--------|
+| 1k one-by-one | ~1 382 ms | ~1 594 ms | PDO ×1.15 |
+| 1k batch | ~3.2 ms | ~14.9 ms | **PDO ×4.7** |
+| 1m batch | ~2 816 ms | ~12 807 ms | **PDO ×4.5** |
+
+Memory for 1m batch: PDO ~1 MB vs smi2 ~4.6 MB.
+
+### Read
+
+| Subject | PDO | PDO mem | smi2 | smi2 mem | Winner |
+|---------|-----|---------|------|----------|--------|
+| 1k all | ~2.6 ms | ~1 MB | ~7.1 ms | ~2.3 MB | PDO ×2.7 |
+| 1k stream | ~2.5 ms | ~727 KB | ~6.7 ms | ~1.4 MB | PDO ×2.7 |
+| 1m all | ~1 047 ms | ~467 MB | ~2 392 ms | ~1.14 GB | PDO ×2.3 |
+| 1m stream | ~623 ms | **~727 KB** | ~2 182 ms | ~3.1 MB | **PDO ×3.5** |
+
+**Key takeaway:** PDO (MySQL wire protocol) outperforms smi2/phpClickHouse (HTTP) across every workload — 2–5× faster and 2–4× less memory. The gap is most dramatic with large batch inserts and streaming reads. PDO streaming 1M rows uses only 727 KB regardless of result size, making it the only practical option for large dataset processing.
+
 ## Benchmark subjects
 
 | Subject | Description |
