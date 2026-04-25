@@ -1,0 +1,29 @@
+{
+    "name": "gam6itko/php-clickhouse-client-benchmark",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Gam6itko\\PhpClickhouseClientBenchmark\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gam6itko\\PhpClickhouseClientBenchmark\\Bench\\": "benchmarks/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Strizhak",
+            "email": "gam6itko@gmail.com"
+        }
+    ],
+    "require": {
+        "smi2/phpclickhouse": "^1.5"
+    },
+    "require-dev": {
+      "ext-pdo": "*",
+      "phpbench/phpbench": "^1.3"
+    }
+}

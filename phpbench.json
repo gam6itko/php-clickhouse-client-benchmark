@@ -1,0 +1,15 @@
+{
+    "$schema": "./vendor/phpbench/phpbench/phpbench.schema.json",
+    "runner.bootstrap": "vendor/autoload.php",
+    "runner.path": "benchmarks",
+    "runner.iterations": [3],
+    "runner.revs": [1],
+    "runner.time_unit": "milliseconds",
+    "runner.php_config": {
+        "memory_limit": "512M"
+    },
+    "runner.php_env": {
+        "CLICKHOUSE_HTTP_PORT": "18123",
+        "CLICKHOUSE_MYSQL_PORT": "19004"
+    }
+}

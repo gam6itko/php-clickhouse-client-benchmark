@@ -1,0 +1,12 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.8
+    ports:
+      - "18123:8123"
+      - "19000:9000"
+      - "19004:9004"
+    environment:
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: default
+    volumes:
+      - ./docker/clickhouse/initdb:/docker-entrypoint-initdb.d
